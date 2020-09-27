@@ -28,22 +28,17 @@ block scripts
       
       var socket = io();
 
-      var sellerId = 'Seller001'
+      var sellerId = 'gustavoghioldi@gmail.com';
 
       $('form').submit(function(e) {
         e.preventDefault(); // prevents page reloading
-        socket.emit('connectAndRegister',
-          { 
-            sellerId: sellerId,
-            message: $('#m').val()
-          });
-          
-        $('#m').val('');
+        socket.emit('connectAndRegister', { sellerId: sellerId });
+
         return false;
       });
 
-      socket.on('chat message', function(msg){
-        $('#messages').append($('<li>').text(msg));
+      socket.on('push order', function(msg){
+        $('#messages').append($('<li>').text(JSON.stringify(msg)));
       });
     });
   

@@ -26,7 +26,7 @@ const postOrderStatusSchema = Joi.object({
 /* GET orders listing. */
 router.get('/:seller_id', function(req, res, next) {
 
-  var url = 'api/orders/?';
+  var url = '/api/orders/?';
 
   var payload = {
     seller_id: req.params.seller_id
@@ -60,10 +60,7 @@ router.get('/:seller_id', function(req, res, next) {
       // handle error
       console.log(error);
       res.status(400).send(`Get Orders -> Error received from OMS API: ${error}`);
-    })
-    .then(function () {
-      // always executed
-  });
+    });
 });
 
 /* POST order status. */
