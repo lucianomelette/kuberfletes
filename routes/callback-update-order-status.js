@@ -156,4 +156,10 @@ function initializeSocketsDb() {
     });
 }
 
+// TEST ONLY!!
+router.get('/', function(req, res, next) {
+  initializeSocketsDb();
+  res.render('socket', { title: 'Socket' });
+});
+
 module.exports = {callbackRouter: router, callbackSocket: io};
