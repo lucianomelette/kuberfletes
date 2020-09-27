@@ -5,20 +5,27 @@ const axios = require('axios');
 /* GET state listing. */
 router.get('/', function(req, res, next) {
 
-  // Make a GET to list state
-  axios.get(process.env.API_OMS_URL + '/api/info/')
-    .then(function (response) {
-      // handle success
-      res.send(response.data);
-    })
-    .catch(function (error) {
-      // handle error
-      console.log(error);
-      res.status(400).send(`GET State -> Error received from OMS API: ${error}`);
-    })
-    .then(function () {
-      // always executed
-  });
+  try {
+    // Make a GET to list state
+    axios.get(process.env.API_OMS_URL + '/api/info/')
+      .then(function (response) {
+        // handle success
+        res.send(response.data);
+      })
+      .catch(function (error) {
+        // handle error
+        if (process.env.SHOW_FULL_ERROR == 'TRUE')
+          console.log(error);
+        
+        res.status(400).send("ERROR: GET state from API OMS");
+      });
+  }
+  catch (e) {
+    if (process.env.SHOW_FULL_ERROR == 'TRUE')
+      console.log(e);
+      
+    res.status(500).send("ERROR: GET state from API OMS");
+  }
 });
 
 module.exports = router;
