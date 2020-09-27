@@ -140,10 +140,12 @@ function initializeSocketsDb() {
     })
     .catch(function (error) {
       // handle error
-      res.status(500).send("ERROR: On initialize database.");
+      console.log("ERROR: On initialize database.");
 
       if (process.env.SHOW_FULL_ERROR == 'TRUE')
         console.log(error);
+
+      return;
     });
 }
 

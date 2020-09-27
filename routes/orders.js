@@ -29,7 +29,7 @@ const postOrderStatusSchema = Joi.object({
 router.get('/:seller_id', function(req, res, next) {
 
   try {
-    var url = '/api/orders/?';
+    var url = '/api/order/?';
 
     var payload = {
       seller_id: req.params.seller_id
@@ -95,7 +95,7 @@ router.post('/:order_code/status', function(req, res, next) {
     }
 
     // Make a POST to update the order status
-    axios.post(process.env.API_OMS_URL + 'api/order-status/', payload)
+    axios.post(process.env.API_OMS_URL + '/api/order-status/', payload)
       .then(function (response) {
         // handle success
         res.send(response.data);
