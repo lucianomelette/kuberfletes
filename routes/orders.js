@@ -54,7 +54,7 @@ router.get('/:seller_id', function(req, res, next) {
     }
 
     // Make a GET to retrieve all orders
-    axios.post(process.env.API_OMS_URL + url, payload)
+    axios.get(process.env.API_OMS_URL + url, payload)
       .then(function (response) {
         // handle success
         res.send(response.data);
