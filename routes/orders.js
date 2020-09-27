@@ -13,7 +13,7 @@ const getOrdersSchema = Joi.object({
     .min(3),
 });
 
-// Schema to validate post orders
+// Schema to validate post orders status
 const postOrderStatusSchema = Joi.object({ 
   order_code: Joi.string()
     .alphanum()
@@ -21,6 +21,18 @@ const postOrderStatusSchema = Joi.object({
     .required(),
 
   status_code: Joi.string()
+    .min(3)
+    .required(),
+});
+
+// Schema to validate post orders track
+const postOrderTrackSchema = Joi.object({ 
+  order_code: Joi.string()
+    .alphanum()
+    .min(3)
+    .required(),
+
+  track_id: Joi.number()
     .min(3)
     .required(),
 });
@@ -76,7 +88,7 @@ router.get('/:seller_id', function(req, res, next) {
 });
 
 /* POST order status. */
-router.post('/:order_code/status', function(req, res, next) {
+router.post('/status/:order_code', function(req, res, next) {
   
   try {
     const payload = {
@@ -116,7 +128,48 @@ router.post('/:order_code/status', function(req, res, next) {
   }
 });
 
-// DELETE test only
+/* POST order track ID. */
+router.post('/track/:order_code', function(req, res, next) {
+  
+  try {
+    const payload = {
+      order_code: req.params.order_code,
+      track_id: req.body.track_id
+    }
+
+    console.log(payload);
+
+    // Validate schema
+    const result = postOrderTrackSchema.validate(payload);
+    
+    if (result.error) {
+      res.status(400).send(`Post Order Tracking -> Schema validation error: ${result.error}`);
+      return;
+    }
+
+    // Make a POST to update the order status
+    axios.post(process.env.API_OMS_URL + '/api/assign-currier/', payload)
+      .then(function (response) {
+        // handle success
+        res.send(response.data);
+      })
+      .catch(function (error) {
+        // handle error
+        if (process.env.SHOW_FULL_ERROR == 'TRUE')
+          console.log(error);
+        
+        res.status(400).send("ERROR: POST order track to API OMS");
+      });
+  }
+  catch(e) {
+    if (process.env.SHOW_FULL_ERROR == 'TRUE')
+      console.log(e);
+      
+    res.status(500).send("ERROR: POST order status to API OMS");
+  }
+});
+
+// TEST ONLY!!
 router.get('/', function(req, res, next) {
   res.render('socket', { title: 'Socket' });
 });

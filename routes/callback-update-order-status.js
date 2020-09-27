@@ -60,17 +60,24 @@ catch(e) {
 router.post('/', function(req, res, next) {
   
   try {
-    const orderCode = req.body.order_code;
+    console.log(req.body);
 
-    axios.get(process.env.API_OMS_URL + `/api/order/?order_code=${orderCode}`)
-      .then((orderResp) => {
+    // const orderCode = req.body.order_code;
 
-        if (!orderResp || !orderResp.data) {
-          res.status(404).send(`Order code not found on db: ${orderCode}`);
+    // axios.get(process.env.API_OMS_URL + `/api/order/?order_code=${orderCode}`)
+    //   .then((orderResp) => {
+
+    //     if (!orderResp || !orderResp.data) {
+    //       res.status(404).send(`Order code not found on db: ${orderCode}`);
+    //       return;
+    //     }
+
+        if (!req.body.order) {
+          res.status(404).send('Order not received');
           return;
         }
 
-        const order = orderResp.data;
+        const order = req.body.order; // orderResp.data;
         console.log(order);
 
         if (!order.seller_id) {
@@ -113,16 +120,16 @@ router.post('/', function(req, res, next) {
             res.status(500).send("ERROR: GET socket by seller ID");
             return;
           });
-      })
-      .catch((error) => {
-        console.log("ERROR: GET order by order code");
+      // })
+      // .catch((error) => {
+      //   console.log("ERROR: GET order by order code");
 
-        if (process.env.SHOW_FULL_ERROR == 'TRUE')
-          console.log(error);
+      //   if (process.env.SHOW_FULL_ERROR == 'TRUE')
+      //     console.log(error);
         
-        res.status(500).send("ERROR: GET order by order code");
-        return;
-      });
+      //   res.status(500).send("ERROR: GET order by order code");
+      //   return;
+      // });
   }
   catch(e) {
     console.log("ERROR: POST callback update order status" + (process.env.SHOW_FULL_ERROR == 'TRUE') ? `: ${e}` : '');

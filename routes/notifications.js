@@ -15,12 +15,12 @@ const postSmsSchema = Joi.object({
 }); 
 
 /* POST notifications. */
-router.post('/sms', function(req, res, next) {
+router.post('/sms/:order_code', function(req, res, next) {
 
   try {
     const payload = {
       order_code: req.params.order_code,
-      message: req.params.message
+      message: req.body.message
     }
 
     console.log(payload);
