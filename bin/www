@@ -26,6 +26,7 @@ var server = http.createServer(app);
 /**
  * Attach socket.io
  */
+
 callbackSocket.attach(server);
 
 /**

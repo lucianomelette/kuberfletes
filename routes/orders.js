@@ -16,7 +16,6 @@ const getOrdersSchema = Joi.object({
 // Schema to validate post orders status
 const postOrderStatusSchema = Joi.object({ 
   order_code: Joi.string()
-    .alphanum()
     .min(3)
     .required(),
 
@@ -28,7 +27,6 @@ const postOrderStatusSchema = Joi.object({
 // Schema to validate post orders track
 const postOrderTrackSchema = Joi.object({ 
   order_code: Joi.string()
-    .alphanum()
     .min(3)
     .required(),
 
